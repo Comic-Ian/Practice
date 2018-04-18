@@ -51,9 +51,9 @@
     <Compile Include="Demo1.Designer.cs">
       <DependentUpon>Demo1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Model\Evaluate.cs" />
-    <Compile Include="Model\FoodModel.cs" />
-    <Compile Include="Model\StoreModel .cs" />
+    <Compile Include="Models\Evaluate.cs" />
+    <Compile Include="Models\FoodModel.cs" />
+    <Compile Include="Models\StoreModel .cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Demo1.resx">
@@ -81,6 +81,9 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Contorllers\" />
+    <Folder Include="Views\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
