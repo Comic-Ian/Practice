@@ -8,6 +8,7 @@ using System.Text;
 using Practice.Model;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 namespace Practice
 {
@@ -129,8 +130,31 @@ namespace Practice
             _storeList.Add(store);
             _foodList.Add(food);
 
-            //将两个集合存储为本地txt文件
+            //拼接字符串
+            string FoodValues = string.Format("食物名称：{0}  食物种类：{1}  食物评价：{2}", food.FoodName, food.FoodKind, food.FoodKind);
+            string StoreValues = string.Format("店铺名称：{0}  店铺地址：{1}  店铺评价：{2}", store.StoreName, store.StoreSite, store.StoreEvaluate);
+            //创建本地文件。如果存在则覆盖
+            FileStream fs = File.Open(@"E:\\123.txt", FileMode.Create);
+            //创建写入流
+            StreamWriter sw = new StreamWriter(fs);
+            //将录入的数据逐个写入文件
+            for (int i = 0; i < StoreValues.Length; i++)
+            {
+                sw.Write(StoreValues[i]);
+            }
+            sw.WriteLine("");
+            for (int i = 0; i < FoodValues.Length; i++)
+            {
+                sw.Write(FoodValues[i]);
+            }
+            
 
+            //关闭写入流
+            sw.Flush();
+            sw.Close();
+
+            //关闭文件
+            fs.Close();
 
             MessageBox.Show("成功");
         }
