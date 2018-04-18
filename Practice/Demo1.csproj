@@ -45,7 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Contorllers\IList.cs" />
+    <Compile Include="Contorllers\IFunc.cs" />
     <Compile Include="Demo1.cs">
       <SubType>Form</SubType>
     </Compile>
