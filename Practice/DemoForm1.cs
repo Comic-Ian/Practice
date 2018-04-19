@@ -13,12 +13,12 @@ using Practice.Contorllers;
 
 namespace Practice
 {
-    public partial class Demo1 : Form
+    public partial class DemoForm1 : Form
     {
         //申明两个个静态的泛型集合  泛型 IList<T>  T：代表放入的类型  这里放入的是模型类
         private static IList<StoreModel> _storeList = null;
         private static IList<FoodModel> _foodList = null;
-        public Demo1()
+        public DemoForm1()
         {
             //初始化窗体
             InitializeComponent();

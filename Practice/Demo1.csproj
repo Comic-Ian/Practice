@@ -46,19 +46,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Contorllers\IFunc.cs" />
-    <Compile Include="Demo1.cs">
+    <Compile Include="DemoForm1.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Demo1.Designer.cs">
-      <DependentUpon>Demo1.cs</DependentUpon>
+    <Compile Include="DemoForm1.Designer.cs">
+      <DependentUpon>DemoForm1.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Evaluate.cs" />
     <Compile Include="Models\FoodModel.cs" />
     <Compile Include="Models\StoreModel .cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Demo1.resx">
-      <DependentUpon>Demo1.cs</DependentUpon>
+    <EmbeddedResource Include="DemoForm1.resx">
+      <DependentUpon>DemoForm1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

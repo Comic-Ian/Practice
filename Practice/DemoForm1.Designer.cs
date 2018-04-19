@@ -1,6 +1,6 @@
 ﻿namespace Practice
 {
-    partial class Demo1
+    partial class DemoForm1
     {
         /// <summary>
         /// 必需的设计器变量。

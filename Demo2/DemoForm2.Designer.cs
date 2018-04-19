@@ -1,6 +1,6 @@
 ﻿namespace Demo2
 {
-    partial class Form1
+    partial class DemoForm2
     {
         /// <summary>
         /// 必需的设计器变量。

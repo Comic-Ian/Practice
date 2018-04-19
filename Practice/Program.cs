@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Practice;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Practice
+namespace Demo1
 {
     static class Program
     {
@@ -20,7 +21,7 @@ namespace Practice
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Demo1());
+            Application.Run(new DemoForm1());
         }
     }
 }
