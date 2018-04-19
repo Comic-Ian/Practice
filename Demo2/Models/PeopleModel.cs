@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Demo2.Models
 {
     //创建一个people类
-    public class People
+    public class PeopleModel
     {
         public string PeopleName { set; get; }
 
