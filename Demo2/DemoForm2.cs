@@ -48,10 +48,32 @@ namespace Demo2
             people.PeopleCardNum = CardNum;
             people.PeopleBirthDay = BirthDay;
 
-            //调用接口的实例
-            IUseSql usersql1 = new UseSql();
-            usersql1.InsetPeople(people);
+            
 
+            //调用接口的实例
+            IUseSql usersqlIns = new UseSql();           
+            bool insresult = usersqlIns.InsetPeople(people);
+
+            if (insresult == true)
+            {
+                MessageBox.Show("添加成功");
+            }
+            if (insresult == false)
+            {
+                MessageBox.Show("添加失败");
+            }
+
+        }
+        private void ShowListInDatagridView(PeopleModel people)
+        {
+            //添加一行获得添加的行号
+            int index = dataGridView1.Rows.Add();
+
+            //给对应的行的每一列加数据
+            dataGridView1.Rows[index].Cells[0].Value = people.PeopleName;
+            dataGridView1.Rows[index].Cells[1].Value = people.PeopleSex;
+            dataGridView1.Rows[index].Cells[2].Value = people.PeopleCardNum;
+            dataGridView1.Rows[index].Cells[3].Value = people.PeopleBirthDay;
         }
 
         private void BtSelect_Click(object sender, EventArgs e)
@@ -60,42 +82,66 @@ namespace Demo2
             //调用接口的实例
             IUseSql usersql2 = new UseSql();
             usersql2.SelectPeople(people);
-
-            int type;
-            DataTable dt = new DataTable("subject");
-            dt.Columns.Add("人员信息/序号", typeof(string));
-            dt.Columns.Add("姓名", typeof(string));
-            dt.Columns.Add("性别", typeof(string));
-            dt.Columns.Add("证件号码", typeof(string));
-            dt.Columns.Add("出生年月", typeof(string));
-            for (int i = 0; i < 4; i++)  //用循环添加4个行集~
+            IList<PeopleModel> _listresult = usersql2.SelectPeople(people);
+            string str = "";
+            string[] Array = new string[] { };//声明一个数组来接收数据 
+            if (_listresult.Count > 0)
             {
-                DataRow dr = dt.NewRow();
-                dt.Rows.Add(dr);
+                for (int i = 0; i < _listresult.Count; i++)
+                {
+                    str += _listresult[i]+",";
+                }
             }
-            dt.Rows[0][0] = "(1)";
-            dt.Rows[1][0] = "(2)";
-            dt.Rows[2][0] = "(3)";
-            dt.Rows[3][0] = "(4)";
-           
+            if (str.Length >= 2)
+            {
+                str = str.Substring(0, str.LastIndexOf(','));
+                Array = str.Split(',');
+            }
+            //循环出数组的数据
+            for (int i = 0; i < Array.Length; i++)
+            {
+                people.PeopleName = Array[0];
+                people.PeopleSex  = Array[1];
+                people.PeopleCardNum  =Convert.ToInt32(Array[2]);
+                people.PeopleBirthDay = Convert.ToInt32(Array[3]);
 
-            //查询出来的东西在dataGridView1里面显示
-            //int index = this.dataGridView1.Rows.Add();
-            //this.dataGridView1.Rows[index].Cells[0].Value = people.PeopleName;
-            //this.dataGridView1.Rows[index].Cells[0].Value = people.PeopleSex;
-            //this.dataGridView1.Rows[index].Cells[0].Value = people.PeopleCardNum;
-            //this.dataGridView1.Rows[index].Cells[0].Value = people.PeopleBirthDay;
-            dt.Rows[1][1] = people.PeopleName;
-            dt.Rows[1][2] = people.PeopleSex;
-            dt.Rows[1][3] = people.PeopleCardNum;
-            dt.Rows[1][4] = people.PeopleBirthDay;
-            this.dataGridView1.DataSource = dt;
+            }
+            ShowListInDatagridView(people);
+
+
 
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
  
+        }
+
+        private void BtDelete_Click(object sender, EventArgs e)
+        {
+            string peopleName = TbName.Text.ToString();
+            string peopleSex = TbSex.Text.ToString();
+            string peopleCardNum = TbCardNum.Text.ToString();
+            string peopleBirthNum = TbBirthDay.Text.ToString();
+
+            PeopleModel people = new PeopleModel();
+            people.PeopleName = peopleName;
+            people.PeopleSex = peopleSex;
+            people.PeopleCardNum = Convert.ToInt32(peopleCardNum);
+            people.PeopleBirthDay = Convert.ToInt32(peopleBirthNum);
+
+            //调用接口的实例
+            IUseSql usersqldel = new UseSql();
+            bool delResult = usersqldel.InsetPeople(people);
+            if (delResult == true)
+            {
+                MessageBox.Show("删除成功");
+            }
+            if (delResult == false)
+            {
+                MessageBox.Show("删除失败");
+            }
+
         }
     }
 }

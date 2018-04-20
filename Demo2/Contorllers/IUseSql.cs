@@ -10,13 +10,13 @@ namespace Demo2.Contorllers
     //写一个抽象的接口
     public interface IUseSql
     {
-        void InsetPeople(PeopleModel people);
+        bool InsetPeople(PeopleModel people);
 
         void UpdatePeople(PeopleModel people);
 
-        void SelectPeople(PeopleModel people);
+        IList<PeopleModel> SelectPeople(PeopleModel people);
 
-        void DeletePeople(PeopleModel people);
+        bool DeletePeople(PeopleModel people);
     }
 
     //将抽象的接口实例化
@@ -24,15 +24,102 @@ namespace Demo2.Contorllers
     {
         //连接字符串
         private static string connectStr = "server = localhost; user id = root; password = root123; database = test";
-        public void DeletePeople(PeopleModel people)
+        public bool DeletePeople(PeopleModel people)
         {
-            throw new NotImplementedException();
+            MySql.Data.MySqlClient.MySqlConnection conn = new MySql.Data.MySqlClient.MySqlConnection(connectStr);
+            if (conn.State != System.Data.ConnectionState.Open)
+            {
+                conn.Open();
+            }
+            string Na = people.PeopleName;
+            string Se = people.PeopleSex;
+            int Cn = people.PeopleCardNum;
+            int Bd = people.PeopleBirthDay;
+            int aa = '0';
+
+            string sqlNa = string.Format("delete * from tbl_people where Name = ('{0}')", Na);
+            string sqlSe = string.Format("delete * from tbl_people where Sex = ('{0}')", Se);
+            string sqlCn = string.Format("delete * from tbl_people where CardNum = ('{0}')", Cn);
+            string sqlBd = string.Format("delete * from tbl_people where BirthDay = ('{0}')", Bd);
+            if(Na != null)
+            {
+                MySql.Data.MySqlClient.MySqlCommand command = new MySql.Data.MySqlClient.MySqlCommand(sqlNa, conn);
+                int result = command.ExecuteNonQuery();
+                command.Dispose();
+                if (result > 0)
+                {
+                    aa = '0';
+                    return true;
+                }
+                
+                else
+                {
+                    aa = '1';
+                    return false;
+                }
+            }
+            if (Se != null)
+            {
+                MySql.Data.MySqlClient.MySqlCommand command = new MySql.Data.MySqlClient.MySqlCommand(sqlSe, conn);
+                int result = command.ExecuteNonQuery();
+                command.Dispose();
+                if (result > 0)
+                {
+                    aa = '0';
+                    return true;
+                }
+                else
+                {
+                    aa = '1';
+                    return false;
+                }
+            }
+            if (Bd != null)
+            {
+                MySql.Data.MySqlClient.MySqlCommand command = new MySql.Data.MySqlClient.MySqlCommand(sqlBd, conn);
+                int result = command.ExecuteNonQuery();
+                command.Dispose();
+                if (result > 0)
+                {
+                    aa = '0';
+                    return true;
+                }
+                else
+                {
+                    aa = '1';
+                    return false;
+                }
+            }
+            if (Se != null)
+            {
+                MySql.Data.MySqlClient.MySqlCommand command = new MySql.Data.MySqlClient.MySqlCommand(sqlSe, conn);
+                int result = command.ExecuteNonQuery();
+                command.Dispose();
+                if (result > 0)
+                {
+                    aa = '0';
+                    return true;
+                }
+                else
+                {
+                    aa = '1';
+                    return false;
+                }
+            }
+            if (aa == 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+            conn.Close();
+
         }
 
-        public void InsetPeople(PeopleModel people)
+        public bool InsetPeople(PeopleModel people)
         {
-            //bool Add()
-            //{ 
              
                 //1.连接数据库
                 //使用MySqlConnection这个对象进行实例化一个连接对象，他需要一个连接字符串的参数
@@ -51,7 +138,7 @@ namespace Demo2.Contorllers
                 string Se = people.PeopleSex;
                 int Cn = people.PeopleCardNum;
                 int Bd = people.PeopleBirthDay;
-                string sql =string.Format( "insert into tbl_people(Name,Sex,CardNum,BirthDay) values({0},{1},{2},{3})",Na,Se,Cn,Bd);
+                string sql =string.Format( "insert into tbl_people(Name,Sex,CardNum,BirthDay) values('{0}','{1}','{2}','{3}')",Na,Se,Cn,Bd);
                 //实例化执行对象
                 MySql.Data.MySqlClient.MySqlCommand command = new MySql.Data.MySqlClient.MySqlCommand(sql,conn);
                 //执行一条sql语句 返回执行成功的结果条数 insert into
@@ -61,21 +148,21 @@ namespace Demo2.Contorllers
                 command.Dispose();
                 conn.Close();
 
-            //    if (result > 0)
-            //    {
-            //        return true;
-            //    }
-            //    else
-            //    {
-            //        return false;
-            //    }
-            //}
+                if (result > 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
 
 
         }
 
-        public void SelectPeople(PeopleModel people)
+        public IList<PeopleModel> SelectPeople(PeopleModel people)
         {
+            List<PeopleModel> _peopleList = new List<PeopleModel>();
             MySql.Data.MySqlClient.MySqlConnection conn = new MySql.Data.MySqlClient.MySqlConnection(connectStr);
 
             if (conn.State != System.Data.ConnectionState.Open)
@@ -105,18 +192,21 @@ namespace Demo2.Contorllers
                     //所以我们需要转换成对应的类型，比如这个ID 我们要int类型
                     //name要string类型
                     PeopleModel peoples = new PeopleModel();
-                    peoples.PeopleCardNum = Convert.ToInt32(reader["CardNum"]);
-                    peoples.PeopleBirthDay = Convert.ToInt32(reader["BirthDay"]);
                     peoples.PeopleName = reader["Name"].ToString();
                     peoples.PeopleSex = reader["Sex"].ToString();
+                    peoples.PeopleCardNum = Convert.ToInt32(reader["CardNum"]);
+                    peoples.PeopleBirthDay = Convert.ToInt32(reader["BirthDay"]);
+                                       
+                    _peopleList.Add(peoples);
+                    
                 }
-            
 
+            return _peopleList;
             //3.执行完毕 需要释放执行对象并且关闭数据库连接
             command.Dispose();
             conn.Close();
 
-
+            
         }
 
         public void UpdatePeople(PeopleModel people)
