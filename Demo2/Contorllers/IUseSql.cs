@@ -14,7 +14,7 @@ namespace Demo2.Contorllers
 
         void UpdatePeople(PeopleModel people);
 
-        IList<PeopleModel> SelectPeople(PeopleModel people);
+        IList<PeopleModel> SelectPeople();
 
         bool DeletePeople(PeopleModel people);
     }
@@ -160,7 +160,7 @@ namespace Demo2.Contorllers
 
         }
 
-        public IList<PeopleModel> SelectPeople(PeopleModel people)
+        public IList<PeopleModel> SelectPeople()
         {
             List<PeopleModel> _peopleList = new List<PeopleModel>();
             MySql.Data.MySqlClient.MySqlConnection conn = new MySql.Data.MySqlClient.MySqlConnection(connectStr);
@@ -201,10 +201,11 @@ namespace Demo2.Contorllers
                     
                 }
 
-            return _peopleList;
             //3.执行完毕 需要释放执行对象并且关闭数据库连接
             command.Dispose();
             conn.Close();
+            return _peopleList;
+
 
             
         }

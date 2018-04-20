@@ -81,32 +81,13 @@ namespace Demo2
             PeopleModel people = new PeopleModel();
             //调用接口的实例
             IUseSql usersql2 = new UseSql();
-            usersql2.SelectPeople(people);
-            IList<PeopleModel> _listresult = usersql2.SelectPeople(people);
-            string str = "";
-            string[] Array = new string[] { };//声明一个数组来接收数据 
-            if (_listresult.Count > 0)
+            IList<PeopleModel> _listresult = usersql2.SelectPeople();
+            dataGridView1.Rows.Clear(); //清空datagridview数据
+            for (int i = 0; i < _listresult.Count; i++)
             {
-                for (int i = 0; i < _listresult.Count; i++)
-                {
-                    str += _listresult[i]+",";
-                }
+                ShowListInDatagridView(_listresult[i]);
             }
-            if (str.Length >= 2)
-            {
-                str = str.Substring(0, str.LastIndexOf(','));
-                Array = str.Split(',');
-            }
-            //循环出数组的数据
-            for (int i = 0; i < Array.Length; i++)
-            {
-                people.PeopleName = Array[0];
-                people.PeopleSex  = Array[1];
-                people.PeopleCardNum  =Convert.ToInt32(Array[2]);
-                people.PeopleBirthDay = Convert.ToInt32(Array[3]);
-
-            }
-            ShowListInDatagridView(people);
+            
 
 
 
