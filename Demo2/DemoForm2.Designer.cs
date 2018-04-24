@@ -140,6 +140,7 @@
             this.BtUpdate.TabIndex = 10;
             this.BtUpdate.Text = "修改";
             this.BtUpdate.UseVisualStyleBackColor = true;
+            this.BtUpdate.Click += new System.EventHandler(this.BtUpdate_Click);
             // 
             // BtDelete
             // 

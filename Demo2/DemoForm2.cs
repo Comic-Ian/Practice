@@ -100,20 +100,23 @@ namespace Demo2
 
         private void BtDelete_Click(object sender, EventArgs e)
         {
-            string peopleName = TbName.Text.ToString();
-            string peopleSex = TbSex.Text.ToString();
+            //获取数据
             string peopleCardNum = TbCardNum.Text.ToString();
-            string peopleBirthNum = TbBirthDay.Text.ToString();
+
+            //尝试将证件号码转为int类型
+            int CardNum = 0;
+            if (int.TryParse(peopleCardNum, out CardNum) == false)
+            {
+                MessageBox.Show("请输入正确的身份证号码");
+                return;
+            }
 
             PeopleModel people = new PeopleModel();
-            people.PeopleName = peopleName;
-            people.PeopleSex = peopleSex;
-            people.PeopleCardNum = Convert.ToInt32(peopleCardNum);
-            people.PeopleBirthDay = Convert.ToInt32(peopleBirthNum);
+            people.PeopleCardNum = CardNum;
 
             //调用接口的实例
             IUseSql usersqldel = new UseSql();
-            bool delResult = usersqldel.InsetPeople(people);
+            bool delResult = usersqldel.DeletePeople(people);
             if (delResult == true)
             {
                 MessageBox.Show("删除成功");
@@ -122,6 +125,51 @@ namespace Demo2
             {
                 MessageBox.Show("删除失败");
             }
+
+        }
+
+        private void BtUpdate_Click(object sender, EventArgs e)
+        {
+            string peopleName = TbName.Text.ToString();
+            string peopleSex = TbSex.Text.ToString();
+            string peopleCardNum = TbCardNum.Text.ToString();
+            string peopleBirthDay = TbBirthDay.Text.ToString();
+
+            //尝试将证件号码转为int型
+            int CardNum = 0;
+            if (int.TryParse(peopleCardNum, out CardNum) == false)
+            {
+                MessageBox.Show("请输入正确的证件号码");
+                return;
+            }
+
+            //尝试将出生年月转为Int型
+            int BirthDay = 0;
+            if (int.TryParse(peopleBirthDay, out BirthDay) == false)
+            {
+                MessageBox.Show("请输入正确的出生年月");
+                return;
+            }
+
+            PeopleModel people = new PeopleModel();
+            people.PeopleName = peopleName;
+            people.PeopleSex = peopleSex;
+            people.PeopleCardNum = CardNum;
+            people.PeopleBirthDay = BirthDay;
+
+            //调用update接口
+            IUseSql usersqlupd = new UseSql();
+            bool updresult = usersqlupd.UpdatePeople(people);
+
+            if (updresult == true)
+            {
+                MessageBox.Show("修改成功");
+            }
+            if (updresult == false)
+            {
+                MessageBox.Show("修改失败");
+            }
+
 
         }
     }

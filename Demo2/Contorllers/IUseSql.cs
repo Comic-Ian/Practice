@@ -12,7 +12,7 @@ namespace Demo2.Contorllers
     {
         bool InsetPeople(PeopleModel people);
 
-        void UpdatePeople(PeopleModel people);
+        bool UpdatePeople(PeopleModel people);
 
         IList<PeopleModel> SelectPeople();
 
@@ -31,90 +31,30 @@ namespace Demo2.Contorllers
             {
                 conn.Open();
             }
-            string Na = people.PeopleName;
-            string Se = people.PeopleSex;
-            int Cn = people.PeopleCardNum;
-            int Bd = people.PeopleBirthDay;
-            int aa = '0';
+            //身份证号为唯一索引所以这里传递身份证号的值
+            string Cn = people.PeopleCardNum.ToString();
 
-            string sqlNa = string.Format("delete * from tbl_people where Name = ('{0}')", Na);
-            string sqlSe = string.Format("delete * from tbl_people where Sex = ('{0}')", Se);
-            string sqlCn = string.Format("delete * from tbl_people where CardNum = ('{0}')", Cn);
-            string sqlBd = string.Format("delete * from tbl_people where BirthDay = ('{0}')", Bd);
-            if(Na != null)
-            {
-                MySql.Data.MySqlClient.MySqlCommand command = new MySql.Data.MySqlClient.MySqlCommand(sqlNa, conn);
-                int result = command.ExecuteNonQuery();
-                command.Dispose();
-                if (result > 0)
-                {
-                    aa = '0';
-                    return true;
-                }
-                
-                else
-                {
-                    aa = '1';
-                    return false;
-                }
-            }
-            if (Se != null)
-            {
-                MySql.Data.MySqlClient.MySqlCommand command = new MySql.Data.MySqlClient.MySqlCommand(sqlSe, conn);
-                int result = command.ExecuteNonQuery();
-                command.Dispose();
-                if (result > 0)
-                {
-                    aa = '0';
-                    return true;
-                }
-                else
-                {
-                    aa = '1';
-                    return false;
-                }
-            }
-            if (Bd != null)
-            {
-                MySql.Data.MySqlClient.MySqlCommand command = new MySql.Data.MySqlClient.MySqlCommand(sqlBd, conn);
-                int result = command.ExecuteNonQuery();
-                command.Dispose();
-                if (result > 0)
-                {
-                    aa = '0';
-                    return true;
-                }
-                else
-                {
-                    aa = '1';
-                    return false;
-                }
-            }
-            if (Se != null)
-            {
-                MySql.Data.MySqlClient.MySqlCommand command = new MySql.Data.MySqlClient.MySqlCommand(sqlSe, conn);
-                int result = command.ExecuteNonQuery();
-                command.Dispose();
-                if (result > 0)
-                {
-                    aa = '0';
-                    return true;
-                }
-                else
-                {
-                    aa = '1';
-                    return false;
-                }
-            }
-            if (aa == 0)
+
+            string sqlCn = string.Format("delete from tbl_people where CardNum = '{0}'", Cn);
+
+            MySql.Data.MySqlClient.MySqlCommand command = new MySql.Data.MySqlClient.MySqlCommand(sqlCn, conn);
+            //执行一条sql语句 返回执行成功的结果条数 delete 
+            int result = command.ExecuteNonQuery();
+
+
+            //3.执行完毕 需要释放执行对象并且关闭数据库连接
+            command.Dispose();
+            conn.Close();
+            if (result > 0)
             {
                 return true;
             }
+                
             else
             {
                 return false;
             }
-            conn.Close();
+      
 
         }
 
@@ -210,9 +150,41 @@ namespace Demo2.Contorllers
             
         }
 
-        public void UpdatePeople(PeopleModel people)
+        public bool UpdatePeople(PeopleModel people)
         {
-            throw new NotImplementedException();
+            //连接数据库
+            MySql.Data.MySqlClient.MySqlConnection conn = new MySql.Data.MySqlClient.MySqlConnection(connectStr);
+            if (conn.State != System.Data.ConnectionState.Open)
+            {
+                conn.Open();//打开它
+            }
+
+            //sql语句,定义相关变量接收输入的值
+            string Na = people.PeopleName;
+            string Se = people.PeopleSex;
+            int Cn = people.PeopleCardNum;
+            int Bd = people.PeopleBirthDay;
+            string sql = string.Format("update tbl_people set Name = '{0}',Sex = '{1}',CardNum = '{2}',BirthDay = '{3}' where CardNum = '{4}'",Na,Se,Cn,Bd,Cn);
+
+            //实例化执行对象
+            MySql.Data.MySqlClient.MySqlCommand command = new MySql.Data.MySqlClient.MySqlCommand(sql,conn);
+
+            //执行一条sql语句 返回执行成功的结果条数 insert into
+            int result = command.ExecuteNonQuery();
+
+            //3.执行完毕 需要释放执行对象并且关闭数据库连接
+            command.Dispose();
+            conn.Close();
+
+            if (result > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
         }
     }
 }
